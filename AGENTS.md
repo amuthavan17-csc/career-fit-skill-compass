@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Skill dictionary, extraction, matching and recommendation text live in `src/lib/skills.ts` as pure functions with tests in `src/lib/skills.test.ts` — keeps scoring logic testable and identical everywhere it is shown.
+- Resume parsing (unpdf for PDF, fflate-unzipped XML for DOCX) runs inside server functions in `*.server.ts` helpers — both libraries are pure JS and work on the Worker runtime.
+- `resumes` and `analyses` tables have RLS with no policies and are only touched through server functions using the admin client; `jobs` is publicly readable — candidate data is never exposed to the browser directly.
+- Reports are computed on read from the stored extracted skills and current job rows, so adding or editing jobs in the database updates scores without code changes.
