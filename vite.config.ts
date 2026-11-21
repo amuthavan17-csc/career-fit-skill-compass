@@ -15,4 +15,21 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle deps the app uses so the dev server doesn't re-optimize mid-session,
+    // which can load two React copies and crash with "Cannot read properties of null (reading 'useMemo')".
+    optimizeDeps: {
+      include: [
+        "@radix-ui/react-select",
+        "@radix-ui/react-label",
+        "sonner",
+        "lucide-react",
+        "zod",
+        "seroval",
+        "@tanstack/router-core",
+        "@tanstack/router-core/isServer",
+        "@tanstack/router-core/ssr/client",
+      ],
+    },
+  },
 });
